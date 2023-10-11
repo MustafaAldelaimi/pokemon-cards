@@ -2,8 +2,8 @@ defmodule PokemonCardsWeb.PageController do
   use PokemonCardsWeb, :controller
 
   def home(conn, _params) do
-    # The home page is often custom made,
-    # so skip the default app layout.
+    pokemon_list = HTTPoison.get!("https://pokeapi.co/api/v2/pokemon?limit=151")
+    IO.inspect(pokemon_list)
     render(conn, :home, layout: false)
   end
 end

@@ -6,18 +6,26 @@ defmodule PokemonCardsWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {PokemonCardsWeb.Layouts, :root}
-    plug :protect_from_forgery
+    # plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    resources "/pokemons", PokemonController, except: [:new, :edit]
+  end
+
+  scope "/pokemons", PokemonCardsWeb do
+    pipe_through :api
+
+    post "/reset", PokemonController, :reset
   end
 
   scope "/", PokemonCardsWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", PokemonController, :home
   end
 
   # Other scopes may use custom stacks.
